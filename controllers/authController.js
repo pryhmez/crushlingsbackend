@@ -16,7 +16,7 @@ module.exports = function authController() {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
 				// console.log(errors.errors[0].msg)
-				res.status(401).send({
+				res.status(200).send({
 					success: false,
 					message: errors.errors[0].msg,
 					data: errors
@@ -26,10 +26,21 @@ module.exports = function authController() {
 				
 				signUpUser(req.body, hash)
 					.then(result => {
+						const token = jwt.sign(
+							{
+								email: result.email,
+								userId: result._id
+							},
+							'secret',
+							{
+								expiresIn: '1h'
+							}
+						);
 						res.status(200).send({
 							success: true,
 							message: "signUp successful",
-							data: result
+							token,
+							user: result
 						});
 					})
 					.catch((error) => {
@@ -90,11 +101,11 @@ module.exports = function authController() {
 							status: true,
 							message: 'login successful',
 							token: token,
-							// user: user
+							user: user
 						});
 					} else {
 						// return next(new AppError('login failed, please enter correct Username and password', 401));
-						res.status(401).send({
+						res.status(402).send({
 							successful: false,
 							message: 'login failed, please enter correct Username and password',
 							data: req.body

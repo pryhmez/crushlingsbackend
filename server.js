@@ -1,6 +1,10 @@
-var express = require('express');
-var app = express();
-var http = require('http');
+const express = require('express');
+const app = express();
+const http = require('http');
+const socketio = require('socket.io');
+
+
+
 var cors = require('cors');
 var morgan = require('morgan');
 const dotenv = require('dotenv');
@@ -33,12 +37,17 @@ app.use( '/routes',express.static('routes'));
 app.use(express.urlencoded({ extended: false }))
 
 const server = http.createServer(app);
+const io = socketio(server);
+
+
 app.set('views', path.join(__dirname, 'views'));
 
 // app.set('view engine', 'pug');
+// io.on('connection', (socket) => {
+// 	console.log('new websocket connection');
+// })
 
-
-app.use('/api', appRoutes(Router, app));
+app.use('/api', appRoutes(Router, app, io));
 app.all('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
@@ -61,3 +70,4 @@ server.on('listening', listening);
 function listening() {
 	databaseconfig();
 }
+
