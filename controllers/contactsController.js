@@ -25,7 +25,7 @@ module.exports = function () {
     }
 
     this.acceptFriend = (req, res, next) => {
-        
+
         acceptFriend(req.body).then(result => {
             res.status(200).send({
                 success: true,
@@ -38,15 +38,45 @@ module.exports = function () {
         })
     }
 
-    this.getAllFriends = (req, res, next) => {
-
+    this.getAllRecievedFriendRequests = (req, res, next) => {
+        getAllRecievedFriendRequest(req.body).then(result => {
+            res.status(200).send({
+                success: true,
+                userId: req.body,
+                data: result
+            })
+        }).catch(err => {
+            res.status(400).send({
+                message: err + "jfdifn"
+            })
+        })
     }
 
-    this.getAllRecievedFriendRequests = (req, res, next) => {
-
+    this.getAllFriends = (req, res, next) => {
+        getAllFriends(req.body).then(result => {
+            res.status(200).send({
+                success: true,
+                userId: req.body,
+                data: result
+            })
+        }).catch(err => {
+            res.status(400).send({
+                message: err + "jfdifn"
+            })
+        })
     }
 
     this.getAllSentFriendRequests = (req, res, next) => {
-
+        getAllSentFriendRequest(req.body).then(result => {
+            res.status(200).send({
+                success: true,
+                userId: req.body,
+                data: result
+            })
+        }).catch(err => {
+            res.status(400).send({
+                message: err + "jfdifn"
+            })
+        })
     }
 }
