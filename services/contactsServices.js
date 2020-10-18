@@ -147,7 +147,11 @@ const getAllFriends = async function (data) {
                         $filter: {
                             input: "$contacts",
                             as: "contact",
+<<<<<<< HEAD
                             cond: { $in: ["$$contact.requestStatus", ["pending"]] }
+=======
+                            cond: { $in: ["$$contact.requestStatus", ["accepted"]] }
+>>>>>>> dd47924c08e19fe8305d3e9a84354adeb4a5e172
                         }
                     }
                 }
