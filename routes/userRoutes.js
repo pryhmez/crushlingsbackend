@@ -15,7 +15,8 @@ module.exports = function() {
   router.post("/signup", signUpValidation, authCtl.signUp);
   router.post("/login", loginValidation, authCtl.login);
 
-  // router.get("/login", auth, authCtl.getLoggedInUser);
-  // router.get("/getAllUsers", userCtl.getAllUsers);
+  router.post("/finduser", userCtl.searchAndFindUsers);
+
+  router.post("/getmyprofile", userCtl.getUserProfile);
   return router;
 };

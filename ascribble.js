@@ -1,0 +1,9 @@
+{
+    userId,
+    userName,
+    recieverId,
+    text,
+    image,
+    video,
+    audio
+}

@@ -1,4 +1,4 @@
-const { signUpUser, loginUser, editUser, dashboard } = require("../services/userServices");
+const { searchAndFindUsers, getUserProfile, recievedRequests } = require("../services/userServices");
 const { verifyUserAccountToken } = require("../services/authServices");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -7,33 +7,33 @@ const AppError = require("../utils/appError");
 const checkAuth = require("../middleWares/checkAuth");
 
 module.exports = function userController() {
-  this.editUserProfile = (req, res, next) => {
-    const verify = verifyUserAccountToken(req.params.id, req.params.token);
-    if (!verify) {
-      return next(new AppError("cant perform operation", 400));
-    }
-    editUser(req.body, req.params.id)
-      .then(result => {
-        res.send({
-          success: true,
-          message: "user profile updated",
-          data: result
-        });
-        console.log(result);
-      })
-      .catch(error => {
-        res.send({
-          success: false,
-          message: "could not user",
-          data: error
-        });
-      });
-  };
 
-  this.getDashboard = (req, res, next) => {
-    dashboard(req.query).then(result => {
+  //searches and finds a user
+  this.searchAndFindUsers = (req, res, next) => {
+    
+    searchAndFindUsers(req.body).then(result => {
       res.send({
         success: true,
+        entry: req.body,
+        data: result
+      })
+    }).catch(err => {
+      res.send({
+        success: false,
+        data: err
+      })
+    })
+
+  }
+
+
+  //get the users profie details and then returns the value
+  this.getUserProfile = (req, res, next) => {
+
+    getUserProfile(req.body).then(result => {
+      res.send({
+        success: true,
+        entry: req.body,
         data: result
       })
     }).catch(err => {
@@ -44,7 +44,6 @@ module.exports = function userController() {
     })
   }
 
-  this.getAllUsers = (req, res, next) => {
 
-  }
+
 };
